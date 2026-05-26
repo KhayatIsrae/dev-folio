@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { project } from './project.interface';
+import { Project } from './project.interface';
 
 //service des projets
 
@@ -7,7 +7,7 @@ import { project } from './project.interface';
   providedIn: 'root',
 })
 export class ProjectService {
-  private projects: project[] = [
+  private projects: Project[] = [
     {
       id: 1,
       title: "Portfolio Angular",
@@ -64,7 +64,7 @@ export class ProjectService {
     }
   ];
 
-  getPublicProjects(): project[] {
+  getPublicProjects(): Project[] {
     return this.projects.filter(p => p.status === 'public');
   }
 }

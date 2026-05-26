@@ -1,0 +1,162 @@
+/* =========================
+   CONTACT SECTION
+========================= */
+
+.contact-section{
+    display:flex;
+    gap:40px;
+    padding:60px 70px;
+    flex-wrap:wrap;
+}
+
+/* LEFT */
+
+.contact-info{
+    flex:1;
+    min-width:280px;
+}
+
+.contact-info h2{
+    font-size:38px;
+    margin-bottom:20px;
+}
+
+.contact-info p{
+    color:#64748b;
+    line-height:1.7;
+    margin-bottom:30px;
+}
+
+/* INFO ITEMS */
+
+.info-item{
+    margin-bottom:18px;
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.info-item strong{
+    color:#0f172a;
+}
+
+.info-item span{
+    color:#64748b;
+}
+
+/* RIGHT */
+
+.contact-form-container{
+    flex:1;
+    min-width:300px;
+}
+
+/* FORM */
+
+.contact-form{
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+/* INPUTS */
+
+.input-group{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:20px;
+}
+
+.input-group label{
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.input-group input,
+.input-group textarea{
+    padding:14px;
+    border:1px solid #dbeafe;
+    border-radius:10px;
+    font-size:15px;
+    outline:none;
+    transition:0.3s;
+}
+
+.input-group input:focus,
+.input-group textarea:focus{
+    border-color:#2563eb;
+}
+
+/* BUTTON */
+
+.send-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    background:#2563eb;
+    color:white;
+    border-radius:10px;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.send-btn:hover{
+    background:#1d4ed8;
+}
+.error-message{
+    color:#ef4444;
+    font-size:20px;
+    margin-top:6px;
+}
+
+.success-message{
+    color:#0cd251;
+    font-size:20px;
+    margin-top:6px;
+}
+.social-links{
+    display:flex;
+    gap:15px;
+    margin-top:25px;
+    flex-wrap:wrap;
+}
+
+.social-btn{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    padding:10px 16px;
+
+    background:white;
+    color:#0f172a;
+
+    border-radius:12px;
+    text-decoration:none;
+
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+
+    transition:0.3s;
+}
+
+.social-btn:hover{
+    transform:translateY(-3px);
+    background:#2563eb;
+    color:white;
+}
+
+/* RESPONSIVE */
+
+@media (max-width:768px){
+
+    .contact-section{
+        padding:40px 20px;
+    }
+
+    .contact-info h2{
+        font-size:30px;
+    }
+
+}

@@ -1,5 +1,5 @@
 //interface structure dun projet
-export interface project {
+export interface Project {
     id: number;
     title: string;
     description: string;
