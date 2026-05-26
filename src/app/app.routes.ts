@@ -13,10 +13,10 @@ export const routes: Routes = [
             { path: '', component: Accueil },
             { path: 'projets', component: ListeProjet },
             { path: 'competences', component: Competences },
-            { path: 'contact', component: Contact }
+            { path: 'contact', component: Contact },
+            { path: 'project/:id', component: DetailProject }
         ]
     },
-    { path: 'project-details', component: DetailProject }
 
     // { path: '**', component: PageIntrouvable }
 ];
