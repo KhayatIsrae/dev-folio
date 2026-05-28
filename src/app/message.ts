@@ -41,7 +41,7 @@ export class MessageService {
       subject: 'Proposition de projet',
       message:
         'Je travaille actuellement sur une plateforme éducative et je cherche une développeuse Angular.',
-      status: 'seen',
+      status: 'unseen',
     },
 
     {
@@ -53,8 +53,25 @@ export class MessageService {
       status: 'seen',
     },
   ];
+
   addMessage(msg: Message): void {
     this.messages.push(msg);
   }
 
+  getMessages(): Message[] {
+    return this.messages;
+  }
+
+  total(): number {
+    return this.messages.length;
+  }
+
+  markSeen(ind: number): void {
+    this.messages[ind].status = 'seen';
+  }
+
+  deleteMessage(ind: number): Message[] {
+    this.messages = this.messages.filter((_, i) => i !== ind);
+    return this.messages;
+  }
 }

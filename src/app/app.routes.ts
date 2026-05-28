@@ -1,19 +1,16 @@
 import { Routes } from '@angular/router';
-
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Accueil } from './pages/accueil/accueil';
 import { ListeProjet } from './pages/liste-projet/liste-projet';
 import { Competences } from './pages/competences/competences';
 import { Contact } from './pages/contact/contact';
 import { DetailProject } from './pages/detail-project/detail-project';
-
 import { LoginComponent } from './admin/login/login';
 import { AdminLayoutComponent } from './admin/admin-layout/admin-layout';
-
 import { authGuard } from './admin/guards/auth-guard';
-
 import { AdminProjectsComponent } from './admin/projets/projets';
 import { AdminSkillsComponent } from './admin/competences/competences';
+import { Messages } from './admin/messages/messages';
 
 export const routes: Routes = [
 
@@ -58,7 +55,7 @@ export const routes: Routes = [
       { path: 'overview', component: Accueil, canActivate: [authGuard] },
       { path: 'projets', component: AdminProjectsComponent, canActivate: [authGuard] },
       { path: 'competences', component: AdminSkillsComponent, canActivate: [authGuard] },
-      { path: 'messages', component: Contact, canActivate: [authGuard] }
+      { path: 'messages', component: Messages, canActivate: [authGuard] }
     ]
   },
 

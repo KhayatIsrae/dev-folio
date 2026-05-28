@@ -1,1 +1,55 @@
-<p>messages works!</p>
+<section class="admin-messages-section">
+
+    <!-- HEADER -->
+    <div class="messages-header">
+
+        <h2>Messages reçus</h2>
+
+        <span class="messages-count">
+            {{messages.length}} Messages
+        </span>
+
+    </div>
+
+    <!-- MESSAGES -->
+    <div class="messages-container">
+        @for (message of messages; track $index) {
+        <div class="message-card" [ngClass]="{
+            'unseen-message': message.status === 'unseen',
+            'seen-message': message.status === 'seen'}">
+            <div class="message-top">
+
+                <div class="sender-info">
+
+                    <h3>{{message.name}}</h3>
+
+                    <span class="sender-email">
+                        {{message.email}}
+                    </span>
+                </div>
+            </div>
+            <h4 class="message-subject">
+                {{message.subject}}
+            </h4>
+
+            <p class="message-content">
+                {{message.message}}
+            </p>
+            <div class="message-actions">
+                @if (message.status==='unseen') {
+                <button class="read-btn" (click)="handleLu($index)">
+                    Marquer comme lu
+                </button>
+                }
+                <button class="delete-btn" (click)="handlesupprimer($index)">
+                    Supprimer
+                </button>
+
+            </div>
+
+        </div>
+        }
+
+    </div>
+
+</section>
