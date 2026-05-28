@@ -1,77 +1,67 @@
 import { Injectable } from '@angular/core';
 import { Message } from './message.interface';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class MessageService {
 
-  messages: Message[] = [
-
+  private messages: Message[] = [
     {
       name: 'Ahmed Benali',
       email: 'ahmed.benali@gmail.com',
       subject: 'Demande de collaboration',
-      message:
-        'Bonjour Israe, je souhaiterais collaborer avec vous sur un projet Angular.',
+      message: 'Bonjour Israe, je souhaiterais collaborer avec vous sur un projet Angular.',
       status: 'unseen',
     },
-
     {
       name: 'Sara El Idrissi',
       email: 'sara.dev@hotmail.com',
       subject: 'Question concernant votre portfolio',
-      message:
-        'Bonsoir, j’aime beaucoup le design de votre portfolio. Quelles technologies avez-vous utilisées ?',
+      message: 'Bonsoir, j’aime beaucoup le design de votre portfolio.',
       status: 'seen',
-    },
-
-    {
-      name: 'Youssef Amrani',
-      email: 'youssef.amrani@gmail.com',
-      subject: 'Stage développement web',
-      message:
-        'Nous recherchons un profil junior pour un stage en développement frontend.',
-      status: 'unseen',
-    },
-
-    {
-      name: 'Fatima Zahra',
-      email: 'fatima.zahra@outlook.com',
-      subject: 'Proposition de projet',
-      message:
-        'Je travaille actuellement sur une plateforme éducative et je cherche une développeuse Angular.',
-      status: 'unseen',
-    },
-
-    {
-      name: 'Karim Naji',
-      email: 'karim.naji@gmail.com',
-      subject: 'Feedback portfolio',
-      message:
-        'Votre portfolio est moderne et bien structuré. Bravo pour le travail réalisé.',
-      status: 'seen',
-    },
+    }
   ];
 
-  addMessage(msg: Message): void {
-    this.messages.push(msg);
+  constructor() {
+    this.initStorage();
+  }
+
+  private initStorage(): void {
+    if (!localStorage.getItem('messages')) {
+      localStorage.setItem('messages', JSON.stringify(this.messages));
+    }
+  }
+
+  private load(): Message[] {
+    return JSON.parse(localStorage.getItem('messages') || '[]');
+  }
+
+  private save(messages: Message[]): void {
+    localStorage.setItem('messages', JSON.stringify(messages));
   }
 
   getMessages(): Message[] {
-    return this.messages;
+    return this.load();
+  }
+
+  addMessage(msg: Message): void {
+    const messages = this.load();
+    messages.unshift(msg);
+    this.save(messages);
+  }
+
+  markSeen(index: number): void {
+    const messages = this.load();
+    messages[index].status = 'seen';
+    this.save(messages);
+  }
+
+  deleteMessage(index: number): void {
+    const messages = this.load();
+    messages.splice(index, 1);
+    this.save(messages);
   }
 
   total(): number {
-    return this.messages.length;
-  }
-
-  markSeen(ind: number): void {
-    this.messages[ind].status = 'seen';
-  }
-
-  deleteMessage(ind: number): Message[] {
-    this.messages = this.messages.filter((_, i) => i !== ind);
-    return this.messages;
+    return this.load().length;
   }
 }

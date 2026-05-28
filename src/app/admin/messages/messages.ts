@@ -15,13 +15,19 @@ export class Messages implements OnInit {
   public constructor(
     private messageService: MessageService
   ) { }
-  ngOnInit(): void {
+
+  loadMessages(): void {
     this.messages = this.messageService.getMessages();
+  }
+  ngOnInit(): void {
+    this.loadMessages();
   }
   handleLu(ind: number): void {
     this.messageService.markSeen(ind);
+    this.loadMessages();
   }
   handlesupprimer(ind: number): void {
-    this.messages=this.messageService.deleteMessage(ind);
+    this.messageService.deleteMessage(ind);
+    this.loadMessages();
   }
 }
