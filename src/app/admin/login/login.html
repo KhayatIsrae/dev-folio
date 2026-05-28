@@ -1,0 +1,63 @@
+<div class="login-container">
+  <div class="login-card">
+
+    <!-- LOGO -->
+    <div class="logo-circle">S</div>
+
+    <!-- TITLE -->
+    <h1>Bon retour 👋</h1>
+    <p class="subtitle">Accédez à votre espace portfolio</p>
+
+    <!-- DEMO BOX -->
+    <div class="demo-box">
+      Démo — identifiants : <strong>admin / 1234</strong>
+    </div>
+
+    <!-- INPUT USERNAME -->
+    <div class="field">
+      <label>IDENTIFIANT</label>
+      <input
+        type="text"
+        [(ngModel)]="username"
+        name="username"
+        placeholder="admin"
+        [class.input-error]="usernameError"
+      />
+      <span class="error-msg" *ngIf="usernameError">{{ usernameError }}</span>
+    </div>
+
+    <!-- INPUT PASSWORD -->
+    <div class="field">
+      <label>MOT DE PASSE</label>
+      <input
+        type="password"
+        [(ngModel)]="password"
+        name="password"
+        placeholder="••••"
+        [class.input-error]="passwordError"
+      />
+      <span class="error-msg" *ngIf="passwordError">{{ passwordError }}</span>
+    </div>
+
+    <!-- ERREUR GLOBALE (mauvais identifiants) -->
+    <div class="error-global" *ngIf="error">
+      ⚠️ {{ error }}
+    </div>
+
+    <!-- BUTTON -->
+    <button (click)="onLogin()">
+      Se connecter →
+    </button>
+
+    <!-- DIVIDER -->
+    <div class="divider">
+      <span>ou</span>
+    </div>
+
+    <!-- PUBLIC BUTTON -->
+    <button class="ghost" routerLink="/dashboard">
+      Voir le portfolio public
+    </button>
+
+  </div>
+</div>

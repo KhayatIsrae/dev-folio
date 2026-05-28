@@ -1,1 +1,221 @@
-<p>projets works!</p>
+<div class="page">
+
+  <!-- ── Header ── -->
+  <header class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">Projets</h1>
+      <p class="page-sub">{{ data.projects.length }} projets au total</p>
+    </div>
+    <button class="btn-primary" (click)="openAdd()">
+      <span class="btn-icon">＋</span> Nouveau projet
+    </button>
+  </header>
+
+  <!-- ── Stats ── -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-num">{{ data.projects.length }}</span>
+      <span class="stat-label">Total</span>
+    </div>
+    <div class="stat-card green">
+      <span class="stat-num">{{ publishedCount }}</span>
+      <span class="stat-label">Publiés</span>
+    </div>
+    <div class="stat-card yellow">
+      <span class="stat-num">{{ draftCount }}</span>
+      <span class="stat-label">Brouillons</span>
+    </div>
+    <div class="stat-card purple">
+      <span class="stat-num">{{ featuredCount }}</span>
+      <span class="stat-label">En vedette</span>
+    </div>
+  </div>
+
+  <!-- ── Toolbar ── -->
+  <div class="toolbar">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input
+        class="search-input"
+        type="text"
+        placeholder="Rechercher un projet, tech…"
+        [(ngModel)]="query"
+        (input)="apply()"
+      />
+    </div>
+    <select class="select-sort" [(ngModel)]="sortKey" (change)="apply()">
+      <option value="">Trier par…</option>
+      <option value="name">Nom</option>
+      <option value="status">Statut</option>
+      <option value="year">Année</option>
+    </select>
+  </div>
+
+  <!-- ── Table ── -->
+  <div class="table-wrap">
+    <table class="proj-table">
+      <thead>
+        <tr>
+          <th>Projet</th>
+          <th>Technologies</th>
+          <th>Type</th>
+          <th>Statut</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of filtered" class="table-row">
+
+          <!-- Name + avatar -->
+          <td class="td-name">
+            <span class="avatar" [style.background]="p.color">{{ p.initial }}</span>
+            <div class="name-block">
+              <span class="proj-name">{{ p.name }}</span>
+              <span class="proj-desc">{{ p.description | slice:0:55 }}…</span>
+            </div>
+          </td>
+
+          <!-- Techs -->
+          <td class="td-techs">
+            <span class="badge" *ngFor="let t of p.techs | slice:0:3">{{ t }}</span>
+          </td>
+
+          <!-- Type -->
+          <td class="td-type">{{ p.type }}</td>
+
+          <!-- Status -->
+          <td class="td-status">
+            <span class="status-pill"
+              [class.status-pub]="p.status === 'Publié'"
+              [class.status-draft]="p.status === 'Brouillon'"
+              [class.status-priv]="p.status === 'Privé'">
+              {{ p.status }}
+            </span>
+          </td>
+
+          <!-- Date -->
+          <td class="td-date">{{ p.date }}</td>
+
+          <!-- Actions -->
+          <td class="td-actions">
+            <button class="action-btn edit" (click)="openEdit(p)" title="Modifier">✏️</button>
+            <button class="action-btn del"  (click)="delete(p.id)" title="Supprimer">🗑️</button>
+            <a *ngIf="p.github" [href]="p.github" target="_blank"
+               class="action-btn link" title="GitHub">🔗</a>
+          </td>
+        </tr>
+
+        <tr *ngIf="filtered.length === 0">
+          <td colspan="6" class="empty-row">Aucun projet trouvé.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Modal Form ── -->
+  <div class="modal-backdrop" *ngIf="showForm" (click)="cancel()">
+    <div class="modal" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <h2>{{ editingId ? 'Modifier' : 'Nouveau' }} projet</h2>
+        <button class="modal-close" (click)="cancel()">✕</button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="form-row two">
+          <div class="field">
+            <label>Nom *</label>
+            <input [(ngModel)]="form.name" placeholder="Ex: TaskFlow" />
+          </div>
+          <div class="field">
+            <label>Initiale</label>
+            <input [(ngModel)]="form.initial" placeholder="T" maxlength="2" />
+          </div>
+        </div>
+
+        <div class="form-row two">
+          <div class="field">
+            <label>Type</label>
+            <select [(ngModel)]="form.type">
+              <option *ngFor="let t of typeOptions" [value]="t">{{ t }}</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Statut</label>
+            <select [(ngModel)]="form.status">
+              <option *ngFor="let s of statusOptions" [value]="s">{{ s }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Technologies <small>(séparées par virgule)</small></label>
+            <input [(ngModel)]="techsString" placeholder="Angular, RxJS, TypeScript" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Description courte</label>
+            <input [(ngModel)]="form.description" placeholder="Résumé en une ligne…" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label>Description longue</label>
+            <textarea [(ngModel)]="form.longDescription" rows="3" placeholder="Détails du projet…"></textarea>
+          </div>
+        </div>
+
+        <div class="form-row two">
+          <div class="field">
+            <label>GitHub URL</label>
+            <input [(ngModel)]="form.github" placeholder="https://github.com/…" />
+          </div>
+          <div class="field">
+            <label>Live URL</label>
+            <input [(ngModel)]="form.liveUrl" placeholder="https://…" />
+          </div>
+        </div>
+
+        <div class="form-row two">
+          <div class="field">
+            <label>Date</label>
+            <input [(ngModel)]="form.date" placeholder="15 mars 2026" />
+          </div>
+          <div class="field">
+            <label>Couleur</label>
+            <div class="color-row">
+              <span *ngFor="let c of colorOptions" class="color-dot"
+                [style.background]="c"
+                [class.active]="form.color === c"
+                (click)="form.color = c">
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="checkbox-label">
+            <input type="checkbox" [(ngModel)]="form.featured" />
+            Mettre en vedette (featured)
+          </label>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-ghost" (click)="cancel()">Annuler</button>
+        <button class="btn-primary" (click)="save()">
+          {{ editingId ? 'Enregistrer' : 'Ajouter' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

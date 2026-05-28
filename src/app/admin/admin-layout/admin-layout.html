@@ -1,0 +1,59 @@
+<div class="admin-root">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-header">
+      <div class="sidebar-avatar">A</div>
+      <div>
+        <div class="sidebar-name">Admin</div>
+        <div class="sidebar-role">panel</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      @for (item of navItems; track item.route) {
+        <a [routerLink]="item.route"
+           routerLinkActive="active"
+           class="nav-item">
+
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span>{{ item.label }}</span>
+
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar-footer">
+
+      <a routerLink="/accueil" class="nav-item nav-item-ghost">
+        <span class="nav-icon">↗</span>
+        <span>Accueil</span>
+      </a>
+
+      <button class="nav-item nav-item-ghost logout-btn"
+              (click)="auth.logout()">
+        <span class="nav-icon">⟵</span>
+        <span>Déconnexion</span>
+      </button>
+
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+  <div class="admin-main">
+
+    <header class="admin-topbar">
+      <div class="brand">
+        <span>DevFolio</span>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <router-outlet />
+    </div>
+
+  </div>
+
+</div>

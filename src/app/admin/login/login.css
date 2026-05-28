@@ -1,0 +1,189 @@
+/* ─── CONTAINER ─────────────────────────────────── */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(120deg, #f7f7fb, #ffffff);
+  padding: 20px;
+}
+
+/* ─── CARD ───────────────────────────────────────── */
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  border-radius: 26px;
+  padding: 40px 36px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+/* ─── LOGO ───────────────────────────────────────── */
+.logo-circle {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  color: white;
+  font-size: 22px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(124,58,237,0.3);
+}
+
+/* ─── TITLE ──────────────────────────────────────── */
+h1 {
+  font-size: 28px;
+  margin: 10px 0 5px;
+  font-weight: 800;
+}
+
+.subtitle {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* ─── DEMO BOX ───────────────────────────────────── */
+.demo-box {
+  background: #f3f0ff;
+  border: 1px solid #e9d5ff;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  margin-bottom: 18px;
+  color: #4b5563;
+}
+
+/* ─── FIELD WRAPPER ──────────────────────────────── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 4px;
+  text-align: left;
+}
+
+/* ─── LABEL ──────────────────────────────────────── */
+label {
+  display: block;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  margin: 12px 0 6px;
+  color: #374151;
+}
+
+/* ─── INPUT ──────────────────────────────────────── */
+input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #eef2ff;
+  outline: none;
+  font-size: 14px;
+  transition: border-color 0.2s, background 0.2s;
+  box-sizing: border-box; /* ✅ évite le débordement */
+}
+
+input:focus {
+  border-color: #7c3aed;
+  background: white;
+}
+
+/* ✅ Input en rouge si erreur */
+input.input-error {
+  border-color: #e53e3e;
+  background: #fff5f5;
+}
+
+input.input-error:focus {
+  border-color: #e53e3e;
+  background: white;
+}
+
+/* ─── ERROR SOUS CHAMP ───────────────────────────── */
+.error-msg {
+  color: #e53e3e;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+/* ─── ERROR GLOBALE ──────────────────────────────── */
+.error-global {
+  background: #fff5f5;
+  color: #e53e3e;
+  border: 1px solid #feb2b2;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-top: 10px;
+  text-align: left;
+}
+
+/* ─── BUTTON PRIMARY ─────────────────────────────── */
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 18px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(124,58,237,0.3);
+}
+
+/* ─── GHOST BUTTON ───────────────────────────────── */
+.ghost {
+  background: white;
+  border: 1px solid #e5e7eb;
+  color: #111827;
+  margin-top: 0; /* ✅ pas de double marge avec le divider */
+}
+
+.ghost:hover {
+  background: #f9fafb;
+  box-shadow: none;
+  transform: none;
+}
+
+/* ─── DIVIDER ────────────────────────────────────── */
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 18px 0;
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.divider span {
+  padding: 0 10px;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 28px 20px;
+  }
+}

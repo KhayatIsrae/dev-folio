@@ -1,1 +1,165 @@
-<p>competences works!</p>
+<div>
+
+  <!-- HEADER -->
+  <div class="panel-header">
+    <div>
+      <h1 class="page-title">Compétences</h1>
+      <p class="page-sub">
+        {{ skills.length }} compétence{{ skills.length > 1 ? 's' : '' }}
+        enregistrée{{ skills.length > 1 ? 's' : '' }}
+      </p>
+    </div>
+    <button class="btn btn-primary" (click)="openAdd()">+ Nouvelle compétence</button>
+  </div>
+
+  <!-- CATEGORY TABS -->
+  <div class="filter-bar">
+    <button
+      class="filter-btn"
+      [class.active]="activeCategory === 'Toutes'"
+      (click)="activeCategory = 'Toutes'"
+    >
+      Toutes
+    </button>
+    @for (c of categories; track c) {
+      <button
+        class="filter-btn"
+        [class.active]="activeCategory === c"
+        (click)="activeCategory = c"
+      >
+        {{ c }}
+      </button>
+    }
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Compétence</th>
+          <th>Niveau</th>
+          <th>Catégorie</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (s of filteredSkills; track s.id) {
+          <tr>
+            <td>
+              <div class="flex items-center gap-3">
+                <span class="s-icon">{{ s.icon }}</span>
+                <strong>{{ s.name }}</strong>
+              </div>
+            </td>
+            <td>
+              <div class="level-cell">
+                <div class="level-bar">
+                  <div class="level-fill" [style.width.%]="animated ? s.level : 0"></div>
+                </div>
+                <span class="level-pct">{{ s.level }}%</span>
+              </div>
+            </td>
+            <td><span class="tech-tag">{{ s.category }}</span></td>
+            <td>
+              <div class="flex gap-2">
+                <button class="btn-icon" title="Modifier" (click)="openEdit(s)">✏</button>
+                <button class="btn-icon danger" title="Supprimer" (click)="deleteTarget = s">✕</button>
+              </div>
+            </td>
+          </tr>
+        }
+        @empty {
+          <tr>
+            <td colspan="4">
+              <div class="empty-state">
+                <div class="empty-icon">◈</div>
+                <div class="empty-title">Aucune compétence trouvée</div>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+
+<!-- ==============================
+     MODAL ADD / EDIT
+=============================== -->
+@if (modalOpen) {
+  <div class="modal-backdrop" (click)="closeModal($event)">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+
+      <h2 class="modal-title">{{ editMode ? 'Modifier' : '+ Nouvelle compétence' }}</h2>
+
+      <form [formGroup]="form" (ngSubmit)="save()">
+
+        <div class="form-row form-row-2">
+          <div class="form-group">
+            <label>Nom <span class="required">*</span></label>
+            <input type="text" formControlName="name" placeholder="Angular" />
+          </div>
+          <div class="form-group">
+            <label>Emoji / Icône</label>
+            <input type="text" formControlName="icon" placeholder="🔺" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Niveau — {{ form.value.level }}%</label>
+          <input
+            type="range"
+            formControlName="level"
+            min="0"
+            max="100"
+            class="range-input"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Catégorie</label>
+          <select formControlName="category">
+            <option>Frontend</option>
+            <option>Backend</option>
+            <option>Langage</option>
+            <option>Outils</option>
+            <option>Design</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" (click)="modalOpen = false">Annuler</button>
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+            {{ editMode ? 'Enregistrer' : 'Ajouter' }}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+}
+
+
+<!-- ==============================
+     MODAL DELETE CONFIRM
+=============================== -->
+@if (deleteTarget) {
+  <div class="modal-backdrop" (click)="deleteTarget = null">
+    <div class="modal-box modal-box--sm" (click)="$event.stopPropagation()">
+
+      <h2 class="modal-title">Supprimer la compétence</h2>
+      <p class="modal-body-text">
+        Supprimer <strong>{{ deleteTarget.name }}</strong> ?
+      </p>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="deleteTarget = null">Annuler</button>
+        <button class="btn btn-danger" (click)="doDelete()">Supprimer</button>
+      </div>
+
+    </div>
+  </div>
+}
