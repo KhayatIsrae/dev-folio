@@ -10,16 +10,14 @@ import { DetailProject } from './pages/detail-project/detail-project';
 import { LoginComponent } from './admin/login/login';
 import { AdminLayoutComponent } from './admin/admin-layout/admin-layout';
 
-import { authGuard }from './admin/guards/auth-guard';
-import {AdminProjectsComponent} from './admin/projets/projets'
-import {AdminSkillsComponent} from './admin/competences/competences'
+import { authGuard } from './admin/guards/auth-guard';
+
+import { AdminProjectsComponent } from './admin/projets/projets';
+import { AdminSkillsComponent } from './admin/competences/competences';
 
 export const routes: Routes = [
 
-  /* =========================
-     PUBLIC
-  ========================== */
-
+  /* PUBLIC */
   {
     path: '',
     redirectTo: 'dashboard',
@@ -33,57 +31,41 @@ export const routes: Routes = [
       { path: '', component: Accueil },
       { path: 'projets', component: ListeProjet },
       { path: 'competences', component: Competences },
-      { path: 'contact', component: Contact }
+      { path: 'contact', component: Contact },
+      { path: 'project/:id', component: DetailProject }
     ]
   },
 
-  {
-    path: 'project-details',
-    component: DetailProject
-  },
-
-  /* =========================
-     ADMIN LOGIN
-  ========================== */
-
+  /* ADMIN LOGIN */
   {
     path: 'admin/login',
     component: LoginComponent
   },
 
-  /* =========================
-     ADMIN DASHBOARD (MENU + LAYOUT)
-  ========================== */
+  /* REDIRECTION /admin → /admin/login */
+  {
+    path: 'admin',
+    redirectTo: 'admin/login',
+    pathMatch: 'full'
+  },
 
+  /* ADMIN PANEL */
   {
     path: 'admin',
     component: AdminLayoutComponent,
-    canActivate: [authGuard],
     children: [
-
       { path: '', redirectTo: 'overview', pathMatch: 'full' },
-
-      {
-        path: 'overview',
-        component: Accueil   // ou AdminOverviewComponent si tu as
-      },
-
-      {
-        path: 'projets',
-        component: AdminProjectsComponent // ou AdminProjetsComponent
-      },
-
-      {
-        path: 'competences',
-        component: AdminSkillsComponent // ou AdminCompetencesComponent
-      },
-
-      {
-        path: 'messages',
-        component: Contact // placeholder (ou admin messages)
-      }
-
+      { path: 'overview', component: Accueil, canActivate: [authGuard] },
+      { path: 'projets', component: AdminProjectsComponent, canActivate: [authGuard] },
+      { path: 'competences', component: AdminSkillsComponent, canActivate: [authGuard] },
+      { path: 'messages', component: Contact, canActivate: [authGuard] }
     ]
+  },
+
+  /* NOT FOUND */
+  {
+    path: '**',
+    redirectTo: 'dashboard'
   }
 
 ];

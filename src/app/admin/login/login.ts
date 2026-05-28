@@ -51,7 +51,7 @@ export class LoginComponent {
     const success = this.auth.login(this.username, this.password);
 
     if (success) {
-      this.router.navigate(['/admin']);
+  this.router.navigate(['/admin/overview']); // ✅ au lieu de '/admin'
     } else {
       this.error = "Nom d'utilisateur ou mot de passe incorrect";
     }
