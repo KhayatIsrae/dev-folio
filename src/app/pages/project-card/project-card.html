@@ -1,0 +1,18 @@
+<article class="project-card" [routerLink]="['/dashboard/projets', project.id]">
+
+  <div class="card-thumb" [style.background]="project.color">
+    <span class="card-initial">{{ project.initial }}</span>
+  </div>
+
+  <div class="card-body">
+    <h3 class="card-title">{{ project.name }}</h3>
+    <p class="card-techs">{{ project.techs.join(' · ') }}</p>
+    <a
+      [routerLink]="['/dashboard/projets', project.id]"
+      class="card-link"
+      (click)="$event.stopPropagation()">
+      Voir le projet →
+    </a>
+  </div>
+
+</article>

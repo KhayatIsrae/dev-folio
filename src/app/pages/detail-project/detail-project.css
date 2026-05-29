@@ -1,15 +1,220 @@
-/* =========================
-   GLOBAL RESET
-========================= */
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
+/* ───── Banner ───── */
+.detail-banner {
+  height: 220px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-body{
-    background:#f8fafc;
-    color:#0f172a;
+.banner-initial {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 100px;
+  color: white;
+  opacity: 0.95;
+  position: relative;
+  z-index: 1;
+}
+
+.banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+}
+
+/* ───── Layout ───── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 60px;
+  padding: 48px 0 80px;
+  align-items: start;
+}
+
+/* ───── Main ───── */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text2, #888);
+  margin-bottom: 28px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--accent, #000); }
+
+.detail-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  margin-bottom: 14px;
+  line-height: 1.1;
+  color: var(--text1, #111);
+}
+
+.detail-lead {
+  font-size: 16px;
+  color: var(--text2, #666);
+  line-height: 1.7;
+  margin-bottom: 24px;
+  font-weight: 300;
+}
+
+/* ───── Tags ───── */
+.detail-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.tech-tag {
+  padding: 5px 14px;
+  border: 1px solid var(--border, #ddd);
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--text2, #555);
+  background: transparent;
+}
+
+/* ───── Divider ───── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border, #e5e5e5);
+  margin: 0 0 32px;
+}
+
+/* ───── Body ───── */
+.detail-body {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text2, #555);
+  margin-bottom: 40px;
+}
+
+/* ───── Actions ───── */
+.detail-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+.btn-dark {
+  background: #111;
+  color: #fff;
+}
+
+.btn-primary {
+  background: var(--accent, #111);
+  color: #fff;
+}
+
+/* ───── Sidebar ───── */
+.detail-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sidebar-card {
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #e8e8e8);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.sidebar-heading {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 16px;
+  color: var(--text1, #111);
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border, #f0f0f0);
+  font-size: 14px;
+}
+.info-row:last-child { border-bottom: none; }
+
+.info-label { color: var(--text3, #aaa); }
+.info-val   { font-weight: 600; color: var(--text1, #111); }
+
+/* ───── Badge ───── */
+.badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.badge-success { background: #d1fae5; color: #065f46; }
+.badge-warning { background: #fef3c7; color: #92400e; }
+.badge-muted   { background: #f3f4f6; color: #6b7280; }
+
+/* ───── Stack technique ───── */
+.tech-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tech-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text1, #111);
+}
+
+.tech-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent, #10b981);
+  flex-shrink: 0;
+}
+
+/* ───── Not found ───── */
+.not-found {
+  text-align: center;
+  padding: 120px 2rem;
+}
+.not-found h2 { margin-bottom: 24px; }
+
+/* ───── Responsive ───── */
+@media (max-width: 768px) {
+  .detail-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 32px 0 60px;
+  }
+  .detail-title   { font-size: 36px; }
+  .banner-initial { font-size: 72px; }
+  .detail-banner  { height: 160px; }
 }

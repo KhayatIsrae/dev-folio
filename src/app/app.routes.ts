@@ -27,9 +27,9 @@ export const routes: Routes = [
     children: [
       { path: '', component: Accueil },
       { path: 'projets', component: ListeProjet },
+      { path: 'projets/:id', component: DetailProject },
       { path: 'competences', component: Competences },
       { path: 'contact', component: Contact },
-      { path: 'project/:id', component: DetailProject }
     ]
   },
 
@@ -39,7 +39,6 @@ export const routes: Routes = [
     component: LoginComponent
   },
 
-  /* REDIRECTION /admin → /admin/login */
   {
     path: 'admin',
     redirectTo: 'admin/login',
@@ -63,6 +62,5 @@ export const routes: Routes = [
   {
     path: '**',
     redirectTo: 'dashboard'
-  }
-
+  },
 ];

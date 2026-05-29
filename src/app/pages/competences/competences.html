@@ -1,1 +1,51 @@
-<p>competences works!</p>
+
+<main class="page-enter">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="section-heading">
+      <span class="section-tag">Expertise</span>
+      <h1 class="section-title">Compétences techniques</h1>
+      <p class="section-subtitle">
+        Mes technologies de prédilection, affinées au fil des projets.
+      </p>
+    </div>
+
+    <!-- Catégories -->
+    @for (cat of categories; track cat) {
+      <div class="cat-section">
+
+        <h3 class="cat-title">{{ cat }}</h3>
+
+        <div class="skills-grid">
+          @for (s of byCategory(cat); track s.id) {
+            <div class="skill-card">
+
+              <div class="skill-header">
+                <span class="skill-icon">{{ s.icon }}</span>
+                <div class="skill-info">
+                  <div class="skill-name">{{ s.name }}</div>
+                  <div class="skill-cat-label">{{ s.category }}</div>
+                </div>
+                <span class="skill-pct">{{ s.level }}%</span>
+              </div>
+
+              <div class="skill-bar-wrap">
+                <div
+                  class="skill-bar-fill"
+                  [style.width.%]="animating ? s.level : 0">
+                </div>
+              </div>
+
+              <div class="skill-desc">{{ getDesc(s.level) }}</div>
+
+            </div>
+          }
+        </div>
+
+      </div>
+    }
+
+  </div>
+</main>
+

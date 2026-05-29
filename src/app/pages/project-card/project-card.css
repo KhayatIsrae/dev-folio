@@ -1,0 +1,63 @@
+/* ───── Card ───── */
+.project-card {
+  background: var(--surface, #fff);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border, #e8e5e0);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* ───── Thumb ───── */
+.card-thumb {
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-initial {
+  font-family: 'Syne', sans-serif;
+  font-size: 72px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ───── Body ───── */
+.card-body {
+  padding: 20px 22px 22px;
+}
+
+.card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text1, #111);
+  margin: 0 0 6px;
+}
+
+.card-techs {
+  font-size: 13px;
+  color: var(--text2, #999);
+  margin-bottom: 16px;
+}
+
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent, #7c3aed);
+  text-decoration: none;
+  transition: gap 0.2s;
+}
+
+.card-link:hover {
+  gap: 8px;
+}

@@ -14,11 +14,12 @@ import { Project } from '../../core/models/index';
 export class AdminProjectsComponent implements OnInit {
 
   filtered: Project[] = [];
-  query = '';
-  sortKey = '';
+  query    = '';
+  sortKey  = '';
 
-  showForm = false;
+  showForm  = false;
   editingId: number | null = null;
+  deleteTarget: Project | null = null;
 
   form: Omit<Project, 'id'> = this.emptyForm();
 
@@ -42,7 +43,7 @@ export class AdminProjectsComponent implements OnInit {
   }
 
   apply(): void {
-    let r = [...this.data.projects];
+    let r = [...this.data.projects]; // lit getValue() via le getter
     if (this.query.trim()) {
       const q = this.query.toLowerCase();
       r = r.filter(p =>
@@ -73,7 +74,6 @@ export class AdminProjectsComponent implements OnInit {
     if (!this.form.name.trim()) return;
     if (!this.form.initial.trim())
       this.form.initial = this.form.name.charAt(0).toUpperCase();
-
     if (this.editingId !== null) {
       this.data.updateProject(this.editingId, this.form);
     } else {
@@ -83,9 +83,12 @@ export class AdminProjectsComponent implements OnInit {
     this.apply();
   }
 
-  delete(id: number): void {
-    if (!confirm('Supprimer ce projet ?')) return;
-    this.data.deleteProject(id);
+  confirmDelete(p: Project): void { this.deleteTarget = p; }
+
+  doDelete(): void {
+    if (!this.deleteTarget) return;
+    this.data.deleteProject(this.deleteTarget.id);
+    this.deleteTarget = null;
     this.apply();
   }
 
@@ -97,6 +100,6 @@ export class AdminProjectsComponent implements OnInit {
   }
 
   get publishedCount(): number { return this.data.projects.filter(p => p.status === 'Publié').length; }
-  get draftCount(): number     { return this.data.projects.filter(p => p.status === 'Brouillon').length; }
-  get featuredCount(): number  { return this.data.projects.filter(p => p.featured).length; }
+  get draftCount():     number { return this.data.projects.filter(p => p.status === 'Brouillon').length; }
+  get featuredCount():  number { return this.data.projects.filter(p => p.featured).length; }
 }

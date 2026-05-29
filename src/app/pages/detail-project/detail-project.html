@@ -1,1 +1,81 @@
-<p>detail-project works!</p>
+
+@if (project) {
+  <main class="page-enter">
+
+    <div class="detail-banner" [style.background]="project.color">
+      <div class="banner-initial">{{ project.initial }}</div>
+      <div class="banner-overlay"></div>
+    </div>
+
+    <div class="container">
+      <div class="detail-layout">
+
+        <div class="detail-main">
+          <a [routerLink]="['/dashboard/projets']" class="back-link">← Retour aux projets</a>
+          <h1 class="detail-title">{{ project.name }}</h1>
+          <p class="detail-lead">{{ project.description }}</p>
+
+          <div class="detail-tags">
+            @for (t of project.techs; track t) {
+              <span class="tech-tag">{{ t }}</span>
+            }
+          </div>
+
+          <hr class="divider">
+
+          <div class="detail-body">
+            <p>{{ project.longDescription || project.description }}</p>
+          </div>
+
+          <div class="detail-actions">
+            <button class="btn btn-dark" (click)="openGithub()">⬡ Voir sur GitHub</button>
+            @if (project.liveUrl) {
+              <button class="btn btn-primary" (click)="openLive()">↗ Voir en ligne</button>
+            }
+          </div>
+        </div>
+
+        <aside class="detail-sidebar">
+          <div class="card sidebar-card">
+            <h3 class="sidebar-heading">Informations</h3>
+            <div class="info-row">
+              <span class="info-label">Type</span>
+              <span class="info-val">{{ project.type }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Année</span>
+              <span class="info-val">{{ project.year }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Date</span>
+              <span class="info-val">{{ project.date }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Statut</span>
+              <span [class]="getBadgeClass(project.status)">{{ project.status }}</span>
+            </div>
+          </div>
+
+          <div class="card sidebar-card">
+            <h3 class="sidebar-heading">Stack technique</h3>
+            <div class="tech-list">
+              @for (t of project.techs; track t) {
+                <div class="tech-item">
+                  <span class="tech-dot"></span>{{ t }}
+                </div>
+              }
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </main>
+
+} @else {
+  <div class="not-found">
+    <h2>Projet introuvable</h2>
+    <a [routerLink]="['/dashboard/projets']" class="btn btn-primary">Retour aux projets</a>
+  </div>
+}
+

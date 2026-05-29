@@ -1,1 +1,50 @@
-<p>liste-projet works!</p>
+<main class="page-enter">
+  <div class="container">
+
+    <div class="liste-header">
+      <div class="liste-header-left">
+        <p class="liste-eyebrow">Portfolio</p>
+        <h1 class="liste-title">Tous les projets</h1>
+        <p class="liste-sub">
+          {{ filtered.length }} projets — Angular, React, Node.js et plus.
+        </p>
+      </div>
+
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Rechercher..."
+          [(ngModel)]="query"
+          (ngModelChange)="applyFilters()" />
+      </div>
+    </div>
+
+    <!-- Filtres tech -->
+    <div class="filters">
+      @for (tech of techs; track tech) {
+        <button
+          class="filter-btn"
+          [class.active]="activeTech === tech"
+          (click)="setTech(tech)">
+          {{ tech }}
+        </button>
+      }
+    </div>
+
+    <!-- Grille -->
+    @if (filtered.length > 0) {
+      <div class="projects-grid">
+        @for (p of filtered; track p.id) {
+          <app-project-card [project]="p" />
+        }
+      </div>
+    } @else {
+      <div class="empty-state">
+        <p>Aucun projet ne correspond à ta recherche.</p>
+      </div>
+    }
+
+  </div>
+</main>
