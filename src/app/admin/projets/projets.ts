@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../services/data.service';
 import { Project } from '../../core/models/index';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin-projects',
@@ -11,7 +12,7 @@ import { Project } from '../../core/models/index';
   templateUrl: './projets.html',
   styleUrls: ['./projets.css']
 })
-export class AdminProjectsComponent implements OnInit {
+export class AdminProjectsComponent implements OnInit, OnDestroy {
 
   filtered: Project[] = [];
   query    = '';
@@ -27,9 +28,21 @@ export class AdminProjectsComponent implements OnInit {
   readonly typeOptions   = ['Application Web', 'E-commerce', 'Éducation', 'Finance', 'Santé', 'Design', 'Media'];
   readonly colorOptions  = ['#3b82f6','#059669','#0891b2','#d97706','#7c3aed','#dc2626','#0f766e','#1d4ed8'];
 
+  // ✅ FIX 1 : garder la référence pour unsubscribe
+  private sub!: Subscription;
+
   constructor(public data: DataService) {}
 
-  ngOnInit(): void { this.apply(); }
+  ngOnInit(): void {
+    // ✅ FIX 2 : s'abonner à projects$ au lieu d'appeler apply() une seule fois
+    // → apply() sera appelée automatiquement à chaque changement du BehaviorSubject
+    this.sub = this.data.projects$.subscribe(() => this.apply());
+  }
+
+  // ✅ FIX 3 : se désabonner pour éviter les memory leaks
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
 
   private emptyForm(): Omit<Project, 'id'> {
     return {
@@ -43,7 +56,7 @@ export class AdminProjectsComponent implements OnInit {
   }
 
   apply(): void {
-    let r = [...this.data.projects]; // lit getValue() via le getter
+    let r = [...this.data.projects];
     if (this.query.trim()) {
       const q = this.query.toLowerCase();
       r = r.filter(p =>
@@ -65,7 +78,11 @@ export class AdminProjectsComponent implements OnInit {
   }
 
   openEdit(p: Project): void {
-    this.form = { ...p };
+    this.form = {
+      ...p,
+      techs: [...p.techs]  // ✅ FIX 4 : deep copy du tableau pour éviter
+                            // de muter directement l'objet dans le BehaviorSubject
+    };
     this.editingId = p.id;
     this.showForm = true;
   }
@@ -80,6 +97,8 @@ export class AdminProjectsComponent implements OnInit {
       this.data.addProject(this.form);
     }
     this.showForm = false;
+    // ✅ apply() n'est plus nécessaire ici car le subscribe() la déclenche automatiquement
+    // mais on peut la garder pour la réactivité immédiate de la vue admin
     this.apply();
   }
 
@@ -89,6 +108,7 @@ export class AdminProjectsComponent implements OnInit {
     if (!this.deleteTarget) return;
     this.data.deleteProject(this.deleteTarget.id);
     this.deleteTarget = null;
+    // ✅ apply() déclenchée automatiquement via subscribe, mais conservée ici aussi
     this.apply();
   }
 

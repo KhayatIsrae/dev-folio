@@ -1,141 +1,245 @@
-/* =========================================================
-   HEADER
-========================================================= */
+.page {
+  padding: 24px;
+  background: #f7f4ef;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: #111;
+}
+
+/* ================= HEADER ================= */
 .panel-header {
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 8px;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .page-title {
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
+  font-size: 28px;
+  font-weight: 700;
 }
 
 .page-sub {
-  color: var(--text3);
-  font-size: 13px;
+  color: #777;
+  font-size: 14px;
   margin-top: 4px;
-  margin-bottom: 28px;
 }
 
+/* ================= BUTTON ================= */
+.btn {
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
 
-/* =========================================================
-   CATEGORY TABS
-========================================================= */
+.btn-primary {
+  background: #7c3aed;
+  color: white;
+  box-shadow: 0 8px 20px rgba(124,58,237,0.25);
+}
+
+.btn-primary:hover {
+  background: #6d28d9;
+}
+
+/* ================= FILTERS ================= */
 .filter-bar {
   display: flex;
-  gap: 8px;
+  gap: 10px;
+  margin-bottom: 18px;
   flex-wrap: wrap;
-  margin-bottom: 24px;
 }
 
+.filter-btn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #e5e5e5;
+  background: white;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+}
 
-/* =========================================================
-   TABLE
-========================================================= */
+.filter-btn.active {
+  background: #7c3aed;
+  color: white;
+  border-color: #7c3aed;
+}
+
+/* ================= TABLE ================= */
 .table-wrap {
-  overflow-x: auto;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #eee;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.04);
 }
 
-.s-icon {
-  font-size: 20px;
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.tech-tag {
+.data-table thead {
+  background: #fafafa;
+}
+
+.data-table th {
+  text-align: left;
   font-size: 12px;
+  text-transform: uppercase;
+  color: #888;
+  padding: 14px 18px;
+  letter-spacing: 0.5px;
 }
 
+.data-table td {
+  padding: 16px 18px;
+  border-top: 1px solid #f1f1f1;
+}
 
-/* =========================================================
-   LEVEL BAR
-========================================================= */
+/* ================= SKILL ICON ================= */
+.s-icon {
+  font-size: 18px;
+}
+
+/* ================= LEVEL ================= */
 .level-cell {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .level-bar {
-  width: 120px;
-  height: 5px;
-  background: var(--border);
-  border-radius: 3px;
+  width: 140px;
+  height: 6px;
+  background: #eee;
+  border-radius: 10px;
   overflow: hidden;
 }
 
 .level-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  border-radius: 3px;
-  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(90deg, #7c3aed, #a855f7);
+  border-radius: 10px;
+  transition: width 0.6s ease;
 }
 
 .level-pct {
   font-size: 13px;
+  color: #7c3aed;
   font-weight: 600;
-  color: var(--accent);
-  min-width: 38px;
 }
 
-
-/* =========================================================
-   RANGE INPUT
-========================================================= */
-.range-input {
-  width: 100%;
-  margin-top: 8px;
-  accent-color: var(--accent);
+/* ================= BADGE ================= */
+.tech-tag {
+  background: #f3e8ff;
+  color: #7c3aed;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
+/* ================= ACTIONS ================= */
+.btn-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  background: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
 
-/* =========================================================
-   MODAL — BACKDROP & BOX
-========================================================= */
+.btn-icon:hover {
+  background: #f5f5f5;
+}
+
+.btn-icon.danger {
+  color: #ef4444;
+}
+
+/* ================= EMPTY STATE ================= */
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+}
+
+.empty-icon {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+/* ================= MODAL ================= */
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(4px);
-  z-index: 900;
+  background: rgba(0,0,0,0.4);
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 2rem;
+  align-items: center;
 }
 
 .modal-box {
-  background: var(--surface);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-xl);
-  padding: 36px 40px;
-  width: 100%;
-  max-width: 500px;
-  max-height: 90vh;
-  overflow-y: auto;
-  animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  width: 420px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
 }
 
 .modal-box--sm {
-  max-width: 400px;
+  width: 360px;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 15px;
 }
 
 .modal-body-text {
-  color: var(--text2);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+  color: #555;
 }
 
-@keyframes modalIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9) translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* ================= FORM ================= */
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  font-size: 13px;
+  color: #666;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  outline: none;
+}
+
+.range-input {
+  width: 100%;
+}
+
+.form-row {
+  display: grid;
+  gap: 10px;
+}
+
+.form-row-2 {
+  grid-template-columns: 1fr 1fr;
 }

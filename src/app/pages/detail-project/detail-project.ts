@@ -2,13 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataService } from '../../admin/services/data.service';
 import { Project } from '../../core/models/index';
-import { NavBar } from '../../shared/nav-bar/nav-bar';
-import { Footer } from '../../shared/footer/footer';
+
 
 @Component({
   selector: 'app-detail-project',
   standalone: true,
-  imports: [RouterLink, NavBar, Footer],
+  imports: [RouterLink],
   templateUrl: './detail-project.html',
   styleUrl: './detail-project.css',
 })

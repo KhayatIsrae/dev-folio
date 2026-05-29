@@ -1,13 +1,11 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { DataService } from '../../admin/services/data.service';
 import { Skill } from '../../core/models/index';
-import { NavBar } from '../../shared/nav-bar/nav-bar';
-import { Footer } from '../../shared/footer/footer';
 
 @Component({
   selector: 'app-competences',
   standalone: true,
-  imports: [NavBar, Footer],
+  imports: [],
   templateUrl: './competences.html',
   styleUrl: './competences.css',
 })
