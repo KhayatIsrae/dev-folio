@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../services/data.service';
+import { ToastService } from '../services/toast.service';
 import { Project } from '../../core/models/index';
 import { Subscription } from 'rxjs';
 
@@ -28,18 +29,17 @@ export class AdminProjectsComponent implements OnInit, OnDestroy {
   readonly typeOptions   = ['Application Web', 'E-commerce', 'Éducation', 'Finance', 'Santé', 'Design', 'Media'];
   readonly colorOptions  = ['#3b82f6','#059669','#0891b2','#d97706','#7c3aed','#dc2626','#0f766e','#1d4ed8'];
 
-  // ✅ FIX 1 : garder la référence pour unsubscribe
   private sub!: Subscription;
 
-  constructor(public data: DataService) {}
+  constructor(
+    public data:  DataService,
+    private toast: ToastService
+  ) {}
 
   ngOnInit(): void {
-    // ✅ FIX 2 : s'abonner à projects$ au lieu d'appeler apply() une seule fois
-    // → apply() sera appelée automatiquement à chaque changement du BehaviorSubject
     this.sub = this.data.projects$.subscribe(() => this.apply());
   }
 
-  // ✅ FIX 3 : se désabonner pour éviter les memory leaks
   ngOnDestroy(): void {
     this.sub.unsubscribe();
   }
@@ -72,52 +72,57 @@ export class AdminProjectsComponent implements OnInit, OnDestroy {
   }
 
   openAdd(): void {
-    this.form = this.emptyForm();
+    this.form      = this.emptyForm();
     this.editingId = null;
-    this.showForm = true;
+    this.showForm  = true;
   }
 
   openEdit(p: Project): void {
-    this.form = {
-      ...p,
-      techs: [...p.techs]  // ✅ FIX 4 : deep copy du tableau pour éviter
-                            // de muter directement l'objet dans le BehaviorSubject
-    };
+    this.form = { ...p, techs: [...p.techs] };
     this.editingId = p.id;
-    this.showForm = true;
+    this.showForm  = true;
   }
 
   save(): void {
-    if (!this.form.name.trim()) return;
-    if (!this.form.initial.trim())
-      this.form.initial = this.form.name.charAt(0).toUpperCase();
-    if (this.editingId !== null) {
-      this.data.updateProject(this.editingId, this.form);
-    } else {
-      this.data.addProject(this.form);
+    if (!this.form.name.trim()) {
+      this.toast.error('Le nom du projet est obligatoire');
+      return;
     }
-    this.showForm = false;
-    // ✅ apply() n'est plus nécessaire ici car le subscribe() la déclenche automatiquement
-    // mais on peut la garder pour la réactivité immédiate de la vue admin
-    this.apply();
+    try {
+      if (!this.form.initial.trim())
+        this.form.initial = this.form.name.charAt(0).toUpperCase();
+      if (this.editingId !== null) {
+        this.data.updateProject(this.editingId, this.form);
+        this.toast.success('Projet mis à jour ✓');
+      } else {
+        this.data.addProject(this.form);
+        this.toast.success('Projet ajouté ✓');
+      }
+      this.showForm = false;
+      this.apply();
+    } catch {
+      this.toast.error('Erreur lors de l\'enregistrement du projet');
+    }
   }
 
   confirmDelete(p: Project): void { this.deleteTarget = p; }
 
   doDelete(): void {
     if (!this.deleteTarget) return;
-    this.data.deleteProject(this.deleteTarget.id);
-    this.deleteTarget = null;
-    // ✅ apply() déclenchée automatiquement via subscribe, mais conservée ici aussi
-    this.apply();
+    try {
+      this.data.deleteProject(this.deleteTarget.id);
+      this.toast.success('Projet supprimé ✓');
+      this.deleteTarget = null;
+      this.apply();
+    } catch {
+      this.toast.error('Erreur lors de la suppression');
+    }
   }
 
   cancel(): void { this.showForm = false; }
 
-  get techsString(): string { return (this.form.techs ?? []).join(', '); }
-  set techsString(v: string) {
-    this.form.techs = v.split(',').map(t => t.trim()).filter(Boolean);
-  }
+  get techsString(): string          { return (this.form.techs ?? []).join(', '); }
+  set techsString(v: string)         { this.form.techs = v.split(',').map(t => t.trim()).filter(Boolean); }
 
   get publishedCount(): number { return this.data.projects.filter(p => p.status === 'Publié').length; }
   get draftCount():     number { return this.data.projects.filter(p => p.status === 'Brouillon').length; }

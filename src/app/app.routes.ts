@@ -11,6 +11,7 @@ import { authGuard } from './admin/guards/auth-guard';
 import { AdminProjectsComponent } from './admin/projets/projets';
 import { AdminSkillsComponent } from './admin/competences/competences';
 import { Messages } from './admin/messages/messages';
+import { Parametre } from './admin/parametre/parametre';
 
 export const routes: Routes = [
 
@@ -54,7 +55,8 @@ export const routes: Routes = [
       { path: 'overview', component: Accueil, canActivate: [authGuard] },
       { path: 'projets', component: AdminProjectsComponent, canActivate: [authGuard] },
       { path: 'competences', component: AdminSkillsComponent, canActivate: [authGuard] },
-      { path: 'messages', component: Messages, canActivate: [authGuard] }
+      { path: 'messages', component: Messages, canActivate: [authGuard] },
+      { path: 'parametres', component: Parametre, canActivate: [authGuard] },
     ]
   },
 

@@ -1,28 +1,34 @@
-import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { DataService } from '../services/data.service';
+import { ToastService } from '../services/toast.service';
 import { Skill } from '../../core/models/index';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin-skills',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './competences.html',
   styleUrls: ['./competences.css']
 })
-export class AdminSkillsComponent implements OnInit, AfterViewInit {
+export class AdminSkillsComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  private data = inject(DataService);
-  private fb   = inject(FormBuilder);
+  private data  = inject(DataService);
+  private fb    = inject(FormBuilder);
+  private toast = inject(ToastService);
 
-  skills: Skill[] = [];
-  categories: string[] = [];
+  private sub!: Subscription;
+
+  skills:        Skill[]  = [];
+  categories:    string[] = [];
   activeCategory = 'Toutes';
-  modalOpen = false;
-  editMode = false;
-  editId: number | null = null;
-  deleteTarget: Skill | null = null;
-  animated = false;
+  modalOpen      = false;
+  editMode       = false;
+  editId:        number | null = null;
+  deleteTarget:  Skill | null  = null;
+  animated       = false;
 
   form = this.fb.group({
     name:     ['', Validators.required],
@@ -38,11 +44,15 @@ export class AdminSkillsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.load();
+    this.sub = this.data.skills$.subscribe(() => this.load());
   }
 
   ngAfterViewInit(): void {
     setTimeout(() => this.animated = true, 200);
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
   load(): void {
@@ -51,16 +61,16 @@ export class AdminSkillsComponent implements OnInit, AfterViewInit {
   }
 
   openAdd(): void {
-    this.editMode = false;
-    this.editId   = null;
+    this.editMode  = false;
+    this.editId    = null;
     this.form.reset({ icon: '⭐', level: 75, category: 'Frontend' });
     this.modalOpen = true;
   }
 
   openEdit(s: Skill): void {
-    this.editMode = true;
-    this.editId   = s.id;
-    this.form.patchValue(s);
+    this.editMode  = true;
+    this.editId    = s.id;
+    this.form.patchValue({ ...s });
     this.modalOpen = true;
   }
 
@@ -71,21 +81,33 @@ export class AdminSkillsComponent implements OnInit, AfterViewInit {
   }
 
   save(): void {
-    if (this.form.invalid) return;
-    const v = this.form.value as any;
-    if (this.editMode && this.editId) {
-      this.data.updateSkill(this.editId, v);
-    } else {
-      this.data.addSkill(v);
+    if (this.form.invalid) {
+      this.toast.error('Le nom de la compétence est obligatoire');
+      return;
     }
-    this.modalOpen = false;
-    this.load();
+    const v = this.form.value as any;
+    try {
+      if (this.editMode && this.editId) {
+        this.data.updateSkill(this.editId, v);
+        this.toast.success('Compétence mise à jour ✓');
+      } else {
+        this.data.addSkill(v);
+        this.toast.success('Compétence ajoutée ✓');
+      }
+      this.modalOpen = false;
+    } catch {
+      this.toast.error('Erreur lors de l\'enregistrement');
+    }
   }
 
   doDelete(): void {
     if (!this.deleteTarget) return;
-    this.data.deleteSkill(this.deleteTarget.id);
-    this.deleteTarget = null;
-    this.load();
+    try {
+      this.data.deleteSkill(this.deleteTarget.id);
+      this.toast.success('Compétence supprimée ✓');
+      this.deleteTarget = null;
+    } catch {
+      this.toast.error('Erreur lors de la suppression');
+    }
   }
 }
